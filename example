@@ -1,0 +1,265 @@
+// profile jFrame constructor 
+public profile() {
+   Login login = new Login();
+   JOptionPane.showMessageDialog(null, "Hi" + login.getName());  
+   // Display any info associated with login.getName() in database
+}
+
+// inside login jFrame class
+public String getUsername(){
+    String user = jTextName.getText();
+    return user;
+}
+
+I want to display username in a jLabelon welcome jFrame when user is successfully logged in. I'm doing this project with Netbeans and used DBMS is MySQL. Basically I created two jFrames.
+
+One as login.java and other as welcome.java. The jLabel is placed in welcome.java and variable name initialized as jLabel_UnameDisplay.
+
+Here is picture explanation of my requirement and total codes of the project:
+
+Requirement
+
+login.java
+
+public static void main(String args[]) {
+
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
+            }
+        }
+    } catch (ClassNotFoundException ex) {
+        java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (InstantiationException ex) {
+        java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (IllegalAccessException ex) {
+        java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    }
+
+    java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+            new login().setVisible(true);
+        }
+    });
+}
+
+private javax.swing.JButton jButton_login;
+private javax.swing.JLabel jLabel_pass;
+private javax.swing.JLabel jLabel_uname;
+private javax.swing.JPanel jPanel;
+private javax.swing.JPasswordField txt_pass;
+private javax.swing.JTextField txt_uname;
+
+}
+
+public class welcome extends javax.swing.JFrame {
+
+public welcome() {
+    initComponents();
+}
+
+@SuppressWarnings("unchecked")
+
+private void initComponents() {
+
+    jPanel = new javax.swing.JPanel();
+    jLabel_UnameDisplay = new javax.swing.JLabel();
+
+    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+    jPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+    jLabel_UnameDisplay.setBackground(new java.awt.Color(102, 255, 102));
+    jLabel_UnameDisplay.setOpaque(true);
+    jPanel.add(jLabel_UnameDisplay, new org.netbeans.lib.awtextra.AbsoluteConstraints(93, 69, 199, 126));
+
+    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+    getContentPane().setLayout(layout);
+    layout.setHorizontalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 400, Short.MAX_VALUE)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+    );
+    layout.setVerticalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 300, Short.MAX_VALUE)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+    );
+
+    pack();
+}                   
+
+
+public static void main(String args[]) {
+
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
+            }
+        }
+    } catch (ClassNotFoundException ex) {
+        java.util.logging.Logger.getLogger(welcome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (InstantiationException ex) {
+        java.util.logging.Logger.getLogger(welcome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (IllegalAccessException ex) {
+        java.util.logging.Logger.getLogger(welcome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        java.util.logging.Logger.getLogger(welcome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    }
+
+    java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+            new welcome().setVisible(true);
+        }
+    });
+}
+
+private javax.swing.JLabel jLabel_UnameDisplay;
+private javax.swing.JPanel jPanel;
+
+}
+
+Do you want to appear on high quality traffic websites?
+Taboola recommends your content directly on top sites worldwide, driving high quality traffic.
+Learn more at go.taboola.com
+2 Answers
+Seth D. Fulmer
+Seth D. Fulmer, 15+ years working with the Java core language
+Answered Jun 20, 2017
+Some part of this makes it seem like it’s homework but I don’t care - I like being asked questions I know and well . Am I to assume you mean in Java Swing? There are many problems here to solve. First being how to create text fields. 2ndly, how to access the database and 3rdly, how to reference the text fields to set the text in them with the data from the database. Let’s tackle these one problem at a time.
+
+Let’s assume you have a data structure in a table such as Person:
+
+Id
+FirstName
+LastName
+Age
+where First and Last Name fields are strings(Varchar - let’s say 100 characters), Age and Id are Integers and Id is the primary key so unique.
+
+To create text fields in swing, one needs to just call the constructor. JTextField has at least 3–4 constructors to my recollection. One is the default constructor(no arguments). Another just takes a string which is basically the default text in the box. I believe it would set a preferred size based on the default text in that case. Another takes a # of columns and another takes both a string and a # of columns. There may be more constructors but I’m only aware of 4 of them. So let’s say you have a class for a JFrame “PersonDetails”
+
+public class PersonDetails extends JFrame
+{
+     private JTextField mTxtFirstName, mTxtLastName;
+     // Other control variables
+ 
+     public PersonDetails()
+     {
+          super("Person Details...");
+ 
+          //Do other stuff
+ 
+          mTxtFirstName = new JTextField();
+          mTxtFirstName.setFont(getFont());
+          mTxtFirstName.setBorder(BorderFactory.getLoweredBevelBorder());
+ 
+           mTxtLastName = new JTextField();
+           mTxtLastName.setFont(getFont());
+           mTxtLastName.setBorder(BorderFactory.getLoweredBevelBorder());
+     }
+ 
+     protected JTextField getFirstNameField()
+     {
+          return(mTxtFirstName);
+     }
+ 
+     protected JTextField getLastNameField()
+     {
+          return(mTxtLastName);
+     }
+ 
+     //Other methods
+}
+Now that we have the code creating and allowing to reference the text fields, let’s worry about the database. Let’s assume you have a class specially handling it like PersonDetailsDAO or PersonDetailsService handling the direct DB details:
+
+public class PersonDetailsDAO
+{
+	 // Assuming you have a Datasource since using the same connection and never closing it is BAD!!!
+     private DataSource mObjDataSource;
+ 
+     public Connection getConnection() throws SQLException
+     {
+     	return(mObjDataSource.getConnection());
+     }
+ 
+     public List<Person> getPersonById(final int iId) throws SQLException
+     {
+		Connection objConnection = mObjDataSource.getConnection();
+         PreparedStatement objStatement = objConnection.prepareStatement("select FirstName, LastName from Person where Id = ?");
+		  Person objPerson = null;
+          objStatement.setInt(1, iId);
+ 
+           ResultSet objResults = objStatement.executeQuery();
+ 
+           if(objResults.next())
+               {
+   				objPerson = new Person();
+                objPerson.setFirstName(objResults.getString("FirstName");
+                objPerson.setLastName(objResults.getString("LastName");
+                }
+ 
+      		return(objPerson);
+     }
+ 
+	//Put other methods here
+}
+Now assuming you have some action in a button in which you’re calling getPersonById(), you would probably have to pass the Frame in or even simpler, the mTxtFirstName and mTxtLastName into the action or use Spring or Struts or something to autowire it into the action class - Then you’d have as such - assuming the scenario of an action:
+
+public class DoSomethingAction extends AbstractAction
+{
+     private JTextField mTxtFirstName, mTxtLastName;
+     private Person mObjPerson;
+ 
+     public DoSomethingAction(final JTextField txtFirstName, final JTextField txtLastName, final Person objPerson)
+     {
+          super("Do Something");
+ 
+          setFirstName(txtFirstName);
+          setLastName(txtLastName);
+          setPerson(objPerson);
+     }
+ 
+     public void actionPerformed(final ActionEvent objActionEvent)
+     {
+          getFirstName().setText(getPerson().getFirstName());
+          getLastName().setText(getPerson().getLastName());
+     }
+ 
+     protected JTextField getFirstName()
+     {
+          return(mTxtFirstName);
+     }
+ 
+     protected JTextField getLastName()
+      {
+           return(mTxtLastName);
+      }
+ 
+      protected Person getPerson()
+      {
+            return(mObjPerson);
+      }
+ 
+      protected void setFirstName(final JTextField txtFirstName)
+     {
+          mTxtFirstName = txtFirstName;
+     }
+ 
+     protected void setLastName(final JTextField txtLastName)
+     {
+          mTxtLastName = txtLastName;
+     }
+ 
+     protected void setPerson(final Person objPerson)
+     {
+          mObjPerson = objPerson;
+     }
+}
